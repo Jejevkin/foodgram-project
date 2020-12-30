@@ -24,7 +24,7 @@ class Recipe(models.Model):
     description = models.TextField(blank=True,
                                    verbose_name='recipe description')
     ingredients = models.ManyToManyField(Ingredient,
-                                         through='RecipeIngredient')
+                                         through='RecipeIngredient') # related
     # tags =
     cooking_time = models.IntegerField()
     # slug = models.SlugField(max_length=200, unique=True)
@@ -37,6 +37,6 @@ class Recipe(models.Model):
 
 
 class RecipeIngredient(models.Model):
-    ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
+    ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE) # related_name here
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
     amount = models.IntegerField()

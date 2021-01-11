@@ -10,5 +10,6 @@ class Command(BaseCommand):
         with open('recipes/fixtures/ingredients.csv') as file:
             reader = csv.reader(file)
             for row in reader:
-                name, unit = row
-                Ingredient.objects.get_or_create(name=name, unit=unit)
+                title, dimension = row
+                Ingredient.objects.get_or_create(title=title,
+                                                 dimension=dimension)

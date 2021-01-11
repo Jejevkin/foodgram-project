@@ -9,9 +9,9 @@ class RecipeIngredientInline(admin.TabularInline):
 
 
 class IngredientAdmin(admin.ModelAdmin):
-    list_display = ('name', 'unit',)
-    search_fields = ('name',)
-    list_filter = ('name',)
+    list_display = ('title', 'dimension',)
+    search_fields = ('title',)
+    list_filter = ('title',)
     empty_value_display = '-пусто-'
 
 

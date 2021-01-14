@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth import get_user_model
-from django.shortcuts import reverse
+
+# from django.shortcuts import reverse
 
 User = get_user_model()
 
@@ -13,18 +14,16 @@ class Ingredient(models.Model):
                                  verbose_name='ingredient dimension')
 
     def __str__(self):
-        return f'{self.pk} - {self.name} - {self.unit}'
+        return f'{self.pk} - {self.title} - {self.dimension}'
 
 
 class Tag(models.Model):
     title = models.CharField(max_length=50)
     slug = models.SlugField(max_length=50, unique=True)
-
-    def get_absolute_url(self):
-        return reverse('tag_detail_url', kwargs={'slug': self.slug})
+    color = models.SlugField(verbose_name='tag color')
 
     def __str__(self):
-        return f'{self.pk} - {self.title}'
+        return f'{self.title}'
 
 
 class Recipe(models.Model):
@@ -36,8 +35,9 @@ class Recipe(models.Model):
     description = models.TextField(blank=True,
                                    verbose_name='recipe description')
     ingredients = models.ManyToManyField(Ingredient,
-                                         through='RecipeIngredient')  # related
-    # tags = models.ManyToManyField(Tag, related_name='recipe_tag')
+                                         through='RecipeIngredient',
+                                         blank=True)  # related
+    tags = models.ManyToManyField(Tag, related_name='recipe_tag')
     cooking_time = models.IntegerField()
     pub_date = models.DateTimeField(verbose_name='date published',
                                     auto_now_add=True,
@@ -49,6 +49,8 @@ class Recipe(models.Model):
 
 class RecipeIngredient(models.Model):
     ingredient = models.ForeignKey(Ingredient,
-                                   on_delete=models.CASCADE)  # related_name here
-    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
+                                   on_delete=models.CASCADE,
+                                   related_name='ingredient_amount')  # related_name here
+    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE,
+                               related_name='recipe_amount')
     amount = models.IntegerField()

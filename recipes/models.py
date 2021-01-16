@@ -32,13 +32,12 @@ class Recipe(models.Model):
     title = models.CharField(max_length=255)
     image = models.ImageField(upload_to='recipe/', blank=True,
                               null=True)
-    description = models.TextField(blank=True,
-                                   verbose_name='recipe description')
+    description = models.TextField(verbose_name='recipe description')
     ingredients = models.ManyToManyField(Ingredient,
                                          through='RecipeIngredient',
                                          blank=True)  # related
-    tags = models.ManyToManyField(Tag, related_name='recipe_tag')
-    cooking_time = models.IntegerField()
+    tags = models.ManyToManyField(Tag, related_name='recipe_tag', blank=True)
+    cooking_time = models.PositiveIntegerField()
     pub_date = models.DateTimeField(verbose_name='date published',
                                     auto_now_add=True,
                                     db_index=True)

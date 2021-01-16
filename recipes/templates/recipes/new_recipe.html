@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     {% load static %}
+    {% load custom_filters %}
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
@@ -11,23 +12,7 @@
 </head>
 <body class="body">
 <header class="header">
-    <nav class="nav">
-        <div class="nav__container container">
-            <ul class="nav__items list">
-                <li class="nav__item"><a href="#" class="nav__link link">Рецепты</a></li>
-                <li class="nav__item"><a href="#" class="nav__link link">Мои подписки</a></li>
-                <li class="nav__item"><a href="#" class="nav__link link">Создать рецепт</a></li>
-                <li class="nav__item"><a href="#" class="nav__link link">Избранное</a></li>
-                <li class="nav__item"><a href="#" class="nav__link link">Список покупок</a> <span
-                        class="badge badge_style_blue nav__badge" id="counter"></span></li>
-
-            </ul>
-            <ul class="nav__items list">
-                <li class="nav__item"><a href="#" class="nav__link link">Изменить пароль</a></li>
-                <li class="nav__item"><a href="#" class="nav__link link">Выход</a></li>
-            </ul>
-        </div>
-    </nav>
+    {% include 'nav.html' %}
 </header>
 <main class="main container">
     <div class="main__header">
@@ -40,9 +25,10 @@
                 <label for="id_name" class="form__label">Название рецепта</label>
                 <div class="form__field-group">
                     {#                    <input type="text" id="id_title" name="title" class="form__input">#}
-                    {{ form.title }}
+                    {{ form.title | addclass:"form__input" }}
                     {% if form.title.errors %}
                         <span class="form__error">{{ form.title.errors }}</span>
+                        {#                        указать фильтры из yatube#}
                     {% endif %}
                     {#                    <span class="form__error"></span>#}
                 </div>
@@ -105,9 +91,11 @@
             <div class="form__group">
                 <label for="id_time" class="form__label">Время приготовления</label>
                 <div class="form__field-group form__field-group_time">
-                    <input type="number" id="id_time" name="cooking_time" class="form__input"
-                           value="{{ form.cooking_time_time.initial }}" min="0" required="">
+                    {{ form.cooking_time | addclass:"form__input" }}
                     <label for="id_time" class="form__label">минут</label>
+                    {#                    <input type="number" id="id_time" name="cooking_time" class="form__input"#}
+                    {#                           value="{{ form.cooking_time | addclass:"form__input" }}" min="0" required="">#}
+                    {#                    <label for="id_time" class="form__label">минут</label>#}
                     {#                    <input type="text" id="id_cooking_time" name="cooking_time" class="form__input">#}
                     {#                    <label for="id_cooking_time" class="form__label">минут</label>#}
                     {% if form.cooking_time.errors %}
@@ -119,12 +107,13 @@
             <div class="form__group">
                 <label for="id_description" class="form__label">Описание</label>
                 <div class="form__field-group">
-                    {% if form.description.initial == 'None' %}
-                        <textarea name="description" id="id_description" rows="8" class="form__textarea"></textarea>
-                    {% else %}
-                        <textarea name="description" id="id_description" rows="8"
-                                  class="form__textarea">{{ form.description.initial }}</textarea>
-                    {% endif %}
+                    {{ form.description | addclass:"form__textarea" }}
+                    {#                    {% if form.description.initial == 'None' %}#}
+                    {#                        <textarea name="description" id="id_description" rows="8" class="form__textarea"></textarea>#}
+                    {#                    {% else %}#}
+                    {#                        <textarea name="description" id="id_description" rows="8"#}
+                    {#                                  class="form__textarea">{{ form.description | addclass:"form__textarea" }}</textarea>#}
+                    {#                    {% endif %}#}
                     {#                    <textarea name="description" id="id_description" rows="8" class="form__textarea"></textarea>#}
                     {% if form.description.errors %}
                         <span class="form__error">{{ form.description.errors }}</span>
@@ -136,7 +125,7 @@
                 <span class="form__label">Загрузить фото</span>
                 <div class="form__field-group">
                     {#                    <input type="file" name="image" id="id_file">#}
-                    {{ form.image }}
+                    {{ form.image | addclass:"form__file-button" }}
                     {% if form.image.errors %}
                         <span class="form__error">{{ form.image.errors }}</span>
                     {% endif %}

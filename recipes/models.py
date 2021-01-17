@@ -53,3 +53,13 @@ class RecipeIngredient(models.Model):
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE,
                                related_name='recipe_amount')
     amount = models.IntegerField()
+
+
+class FavoriteRecipe(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE,
+                             related_name='users_favorite')
+    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE,
+                               related_name='favorite_recipes')
+
+    def __str__(self):
+        return f'{self.pk} - {self.user} - {self.recipe}'

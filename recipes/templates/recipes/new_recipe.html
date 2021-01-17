@@ -25,7 +25,7 @@
                 <label for="id_name" class="form__label">Название рецепта</label>
                 <div class="form__field-group">
                     {#                    <input type="text" id="id_title" name="title" class="form__input">#}
-                    {{ form.title | addclass:"form__input" }}
+                    {{ form.title | addclass:'form__input' }}
                     {% if form.title.errors %}
                         <span class="form__error">{{ form.title.errors }}</span>
                         {#                        указать фильтры из yatube#}
@@ -91,7 +91,7 @@
             <div class="form__group">
                 <label for="id_time" class="form__label">Время приготовления</label>
                 <div class="form__field-group form__field-group_time">
-                    {{ form.cooking_time | addclass:"form__input" }}
+                    {{ form.cooking_time | addclass:'form__input' }}
                     <label for="id_time" class="form__label">минут</label>
                     {#                    <input type="number" id="id_time" name="cooking_time" class="form__input"#}
                     {#                           value="{{ form.cooking_time | addclass:"form__input" }}" min="0" required="">#}
@@ -107,7 +107,7 @@
             <div class="form__group">
                 <label for="id_description" class="form__label">Описание</label>
                 <div class="form__field-group">
-                    {{ form.description | addclass:"form__textarea" }}
+                    {{ form.description | addclass:'form__textarea' }}
                     {#                    {% if form.description.initial == 'None' %}#}
                     {#                        <textarea name="description" id="id_description" rows="8" class="form__textarea"></textarea>#}
                     {#                    {% else %}#}
@@ -125,7 +125,7 @@
                 <span class="form__label">Загрузить фото</span>
                 <div class="form__field-group">
                     {#                    <input type="file" name="image" id="id_file">#}
-                    {{ form.image | addclass:"form__file-button" }}
+                    {{ form.image | addclass:'form__file-button' }}
                     {% if form.image.errors %}
                         <span class="form__error">{{ form.image.errors }}</span>
                     {% endif %}

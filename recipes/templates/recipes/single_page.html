@@ -3,6 +3,7 @@
 <head>
     {% load static %}
     {% load thumbnail %}
+    {% load custom_filters %}
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
@@ -14,6 +15,7 @@
 <header class="header">
     {% include 'nav.html' %}
 </header>
+{% csrf_token %}
 <main class="main container">
     <div class="single-card" data-id="{{ recipe.id }}" data-author="{{ author.id }}">
         {% thumbnail recipe.image "480x480" crop="center" as im %}
@@ -25,9 +27,19 @@
             <div class="single-card__header-info">
                 <h1 class="single-card__title">{{ recipe.title }}</h1>
                 <div class="single-card__favorite">
-                    <button class="button button_style_none" name="favorites" data-out><span
-                            class="icon-favorite icon-favorite_big"></span></button>
-                    <div class="single-card__favorite-tooltip tooltip">Добавить в избранное</div>
+                    {% if user.is_authenticated %}
+                        {% if recipe|is_favorite:request.user %}
+                            <button class="button button_style_none" name="favorites"><span
+                                    class="icon-favorite icon-favorite_big icon-favorite_active"></span></button>
+                        {% else %}
+                            <button class="button button_style_none" name="favorites" data-out><span
+                                    class="icon-favorite icon-favorite_big"></span></button>
+                        {% endif %}
+                        <div class="single-card__favorite-tooltip tooltip">Добавить в избранное</div>
+                        {#                    <button class="button button_style_none" name="favorites" data-out><span#}
+                        {#                            class="icon-favorite icon-favorite_big"></span></button>#}
+
+                    {% endif %}
                 </div>
             </div>
             <ul class="single-card__items">
@@ -40,7 +52,9 @@
                 <p class="single-card__text"><span class="icon-time"></span> {{ recipe.cooking_time }} мин.</p>
                 <ul class="single-card__items">
                     <li class="single-card__item"><p class="single-card__text"><span
-                            class="icon-user"></span> {{ author.username }}</p></li>
+                            class="icon-user"></span> <a
+                            href="{% url 'profile' username=recipe.author %}"
+                            style="color: black">{{ recipe.author.username }}</a></p></li>
                     {% if request.user == recipe.author %}
                         <li class="single-card__item"><a style="margin-left: 2.5em"
                                                          href="{% url 'recipe_edit' recipe.author.username recipe.id %}"
@@ -86,16 +100,16 @@
         </ul>
     </div>
 </footer>
-<script src="js/components/Purchases.js"></script>
-<script src="js/components/Favorites.js"></script>
-<script src="js/components/Subscribe.js"></script>
-<script src="js/config/config.js"></script>
+<script src="{% static 'js/components/Purchases.js' %}"></script>
+<script src="{% static 'js/components/Favorites.js' %}"></script>
+<script src="{% static 'js/components/Subscribe.js' %}"></script>
+<script src="{% static 'js/config/config.js' %}"></script>
 
-<script src="js/components/MainCards.js"></script>
-<script src="js/components/SingleCard.js"></script>
-<script src="js/components/Header.js"></script>
+<script src="{% static 'js/components/MainCards.js' %}"></script>
+<script src="{% static 'js/components/SingleCard.js' %}"></script>
+<script src="{% static 'js/components/Header.js' %}"></script>
 
-<script src="js/api/Api.js"></script>
-<script src="singlePage.js"></script>
+<script src="{% static 'js/api/Api.js' %}"></script>
+<script src="{% static 'singlePage.js' %}"></script>
 </body>
 </html>

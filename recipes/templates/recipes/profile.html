@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     {% load static %}
+    {% load custom_filters %}
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
@@ -40,11 +41,12 @@
             </button>
         </p>
     </div>
-    {% for recipe in page %}
-        {% include 'recipes/recipe.html' %}
-    {% endfor %}
+    <div class="card-list">
+        {% for recipe in page %}
+            {% include 'recipes/recipe.html' %}
+        {% endfor %}
     </div>
-    {% include 'paginator.html' %}
+    {% include 'paginator.html' with items=page paginator=paginator %}
     {#    <nav class="pagination" aria-label="Search results pages">#}
     {#        <ul class="pagination__container">#}
     {#            <li class="pagination__item"><a class="pagination__link link" href="#"><span class="icon-left"></span></a>#}
@@ -68,17 +70,17 @@
         </ul>
     </div>
 </footer>
-<script src="js/components/MainCards.js"></script>
+<script src="{% static 'js/components/MainCards.js' %}"></script>
 
-<script src="js/components/Purchases.js"></script>
-<script src="js/components/Favorites.js"></script>
-<script src="js/components/Subscribe.js"></script>
+<script src="{% static 'js/components/Purchases.js' %}"></script>
+<script src="{% static 'js/components/Favorites.js' %}"></script>
+<script src="{% static 'js/components/Subscribe.js' %}"></script>
 
-<script src="js/config/config.js"></script>
-<script src="js/components/AuthorRecipe.js"></script>
-<script src="js/components/Header.js"></script>
+<script src="{% static 'js/config/config.js' %}"></script>
+<script src="{% static 'js/components/AuthorRecipe.js' %}"></script>
+<script src="{% static 'js/components/Header.js' %}"></script>
 
-<script src="js/api/Api.js"></script>
-<script src="authorRecipe.js"></script>
+<script src="{% static 'js/api/Api.js' %}"></script>
+<script src="{% static 'authorRecipe.js' %}"></script>
 </body>
 </html>

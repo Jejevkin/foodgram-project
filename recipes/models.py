@@ -55,11 +55,24 @@ class RecipeIngredient(models.Model):
     amount = models.IntegerField()
 
 
+class FavoriteRecipeManager(models.Manager):
+
+    @staticmethod
+    def favorite_recipe(user):
+        favorite = FavoriteRecipe.objects.filter(user=user).all()
+        recipes = favorite.values_list('recipe', flat=True)
+        favorite_list = Recipe.objects.filter(pk__in=recipes).order_by(
+            '-pub_date').all()
+        return favorite_list
+
+
 class FavoriteRecipe(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE,
                              related_name='users_favorite')
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE,
                                related_name='favorite_recipes')
+
+    objects = FavoriteRecipeManager()
 
     def __str__(self):
         return f'{self.pk} - {self.user} - {self.recipe}'

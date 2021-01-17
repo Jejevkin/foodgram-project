@@ -2,7 +2,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from .forms import RecipeForm
-from .models import Recipe, Ingredient, RecipeIngredient, User
+from .models import Recipe, Ingredient, RecipeIngredient, User, FavoriteRecipe
 from .utils import get_ingredients
 
 
@@ -66,3 +66,13 @@ def recipe_view(request, username, recipe_id):
     # form = CommentForm()
     return render(request, 'recipes/single_page.html',
                   {'author': author, 'recipe': recipe})
+
+
+@login_required
+def favorite_recipe(request):
+    favorite_list = FavoriteRecipe.objects.favorite_recipe(request.user)
+    paginator = Paginator(favorite_list, 9)
+    page_number = request.GET.get('page')
+    page = paginator.get_page(page_number)
+    return render(request, 'recipes/favorite.html',
+                  {'page': page, 'paginator': paginator})

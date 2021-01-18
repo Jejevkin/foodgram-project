@@ -7,7 +7,8 @@ from .utils import get_ingredients
 
 
 def index(request):
-    recipe_list = Recipe.objects.order_by('-pub_date').all()
+    tags = request.GET.getlist('tag')
+    recipe_list = Recipe.objects.tag_filter(tags)
     paginator = Paginator(recipe_list, 9)
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
@@ -43,8 +44,9 @@ def new_recipe(request):
 
 
 def profile(request, username):
+    tags = request.GET.getlist('tag')
     author = get_object_or_404(User, username=username)
-    post_list = author.author_recipes.order_by('-pub_date').all()
+    post_list = Recipe.objects.tag_filter(tags).filter(author=author)
     paginator = Paginator(post_list, 9)
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
@@ -70,7 +72,8 @@ def recipe_view(request, username, recipe_id):
 
 @login_required
 def favorite_recipe(request):
-    favorite_list = FavoriteRecipe.objects.favorite_recipe(request.user)
+    tags = request.GET.getlist('tag')
+    favorite_list = FavoriteRecipe.objects.favorite_recipe(request.user, tags)
     paginator = Paginator(favorite_list, 9)
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)

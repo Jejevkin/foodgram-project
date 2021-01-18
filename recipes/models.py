@@ -26,6 +26,17 @@ class Tag(models.Model):
         return f'{self.title}'
 
 
+class RecipeManager(models.Manager):
+
+    @staticmethod
+    def tag_filter(tags):
+        if tags:
+            return Recipe.objects.filter(tags__slug__in=tags).order_by(
+                '-pub_date').distinct()
+        else:
+            return Recipe.objects.order_by('-pub_date').all()
+
+
 class Recipe(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE,
                                related_name='author_recipes')
@@ -41,6 +52,8 @@ class Recipe(models.Model):
     pub_date = models.DateTimeField(verbose_name='date published',
                                     auto_now_add=True,
                                     db_index=True)
+
+    objects = RecipeManager()
 
     def __str__(self):
         return f'{self.pk} - {self.title} - {self.author}'
@@ -58,11 +71,11 @@ class RecipeIngredient(models.Model):
 class FavoriteRecipeManager(models.Manager):
 
     @staticmethod
-    def favorite_recipe(user):
+    def favorite_recipe(user, tags):
         favorite = FavoriteRecipe.objects.filter(user=user).all()
         recipes = favorite.values_list('recipe', flat=True)
-        favorite_list = Recipe.objects.filter(pk__in=recipes).order_by(
-            '-pub_date').all()
+        favorite_list = Recipe.objects.tag_filter(tags).filter(
+            pk__in=recipes).order_by('-pub_date')
         return favorite_list
 
 

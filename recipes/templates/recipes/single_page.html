@@ -54,7 +54,7 @@
                     <li class="single-card__item"><p class="single-card__text"><span
                             class="icon-user"></span> <a
                             href="{% url 'profile' username=recipe.author %}"
-                            style="color: black">{{ recipe.author.username }}</a></p></li>
+                            style="color: black">{{ recipe.author.get_full_name|default:recipe.author.username }}</a></p></li>
                     {% if request.user == recipe.author %}
                         <li class="single-card__item"><a style="margin-left: 2.5em"
                                                          href="{% url 'recipe_edit' recipe.author.username recipe.id %}"
@@ -70,9 +70,24 @@
                     </button>
                 </li>
                 <li class="single-card__item">
-                    <button class="button button_style_light-blue button_size_subscribe" name="subscribe" data-out>
-                        Подписаться на автора
-                    </button>
+                    {% if request.user.is_authenticated and request.user != recipe.author %}
+                        {% if recipe.author|is_subscribe:user %}
+                            <li class="single-card__item">
+                                <button class="button button_style_light-blue button_size_auto"
+                                        name="subscribe"><span class="icon-check button__icon"></span> Отписаться от
+                                    автора
+                                </button>
+                                {% else %}
+                            <li class="single-card__item">
+                                <button class="button button_style_light-blue button_size_auto"
+                                        name="subscribe" data-out>Подписаться на автора
+                                </button>
+                            </li>
+                        {% endif %}
+                    {% endif %}
+                {#                    <button class="button button_style_light-blue button_size_subscribe" name="subscribe" data-out>#}
+                {#                        Подписаться на автора#}
+                {#                    </button>#}
                 </li>
             </ul>
             <div class="single-card__section">

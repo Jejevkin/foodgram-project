@@ -28,7 +28,7 @@
             <p class="card__text"><span class="icon-time"></span> {{ recipe.cooking_time }} мин.</p>
             <p class="card__text"><span class="icon-user"></span> <a
                     href="{% url 'profile' username=recipe.author %}"
-                    style="color: black">{{ recipe.author.username }}</a></p>
+                    style="color: black">{{ recipe.author.get_full_name|default:recipe.author.username }}</a></p>
         </div>
     </div>
     <div class="card__footer">

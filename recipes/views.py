@@ -2,7 +2,8 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from .forms import RecipeForm
-from .models import Recipe, Ingredient, RecipeIngredient, User, FavoriteRecipe
+from .models import (Recipe, Ingredient, RecipeIngredient, User,
+                     FavoriteRecipe, Subscription)
 from .utils import get_ingredients
 
 
@@ -78,4 +79,14 @@ def favorite_recipe(request):
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
     return render(request, 'recipes/favorite.html',
+                  {'page': page, 'paginator': paginator})
+
+
+@login_required
+def subscriptions_index(request):
+    subscriptions_list = Subscription.objects.subscriptions(user=request.user)
+    paginator = Paginator(subscriptions_list, 6)
+    page_number = request.GET.get('page')
+    page = paginator.get_page(page_number)
+    return render(request, 'recipes/subscription.html',
                   {'page': page, 'paginator': paginator})

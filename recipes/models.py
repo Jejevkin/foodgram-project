@@ -73,9 +73,9 @@ class FavoriteRecipeManager(models.Manager):
     @staticmethod
     def favorite_recipe(user, tags):
         favorite = FavoriteRecipe.objects.filter(user=user).all()
-        recipes = favorite.values_list('recipe', flat=True)
+        recipes_id = favorite.values_list('recipe', flat=True)
         favorite_list = Recipe.objects.tag_filter(tags).filter(
-            pk__in=recipes).order_by('-pub_date')
+            pk__in=recipes_id).order_by('-pub_date')
         return favorite_list
 
 
@@ -89,3 +89,25 @@ class FavoriteRecipe(models.Model):
 
     def __str__(self):
         return f'{self.pk} - {self.user} - {self.recipe}'
+
+
+class SubscriptionManager(models.Manager):
+
+    @staticmethod
+    def subscriptions(user):
+        sub_obj = Subscription.objects.filter(user=user)
+        author_id = sub_obj.values_list('author', flat=True)
+        subscriptions_list = User.objects.filter(pk__in=author_id)
+        return subscriptions_list
+
+
+class Subscription(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE,
+                             related_name='follower')
+    author = models.ForeignKey(User, on_delete=models.CASCADE,
+                               related_name='following')
+
+    objects = SubscriptionManager()
+
+    def __str__(self):
+        return f'{self.pk} - {self.user} - {self.author}'

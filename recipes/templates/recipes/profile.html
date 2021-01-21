@@ -16,27 +16,73 @@
 </header>
 <main class="main container">
     <div class="main__header">
-        <h1 class="main__title">{{ author.username }}</h1>
+        <h1 class="main__title">{{ author.get_full_name|default:author.username }}</h1>
         <ul class="tags">
             {% for tag in all_tags|all_tags %}
                 <li class="tags__item">
                     <a id="{{ tags.slug }}" class="tags__checkbox tags__checkbox_style_{{ tag.color }}
                         {% if tag.slug in request.GET|get_active_tags %} tags__checkbox_active {% endif %}"
-                       href="{% url 'profile' author.username%}?{{ request|change_tag_link:tag }}"></a><span
+                       href="{% url 'profile' author.username %}?{{ request|change_tag_link:tag }}"></a><span
                         class="tags__label">{{ tag.title }}</span>
                 </li>
             {% endfor %}
         </ul>
 
     </div>
-    <!--        <p style="padding: 0 0 2em 0;"><a class="button button_style_light-blue" href="#">Подписаться на автора</a></p>-->
-    <div class="author-subscribe" data-author="323">
-        <p style="padding: 0 0 2em 0;">
-            <button class="button button_style_light-blue button_size_subscribe" name="subscribe" data-out>Подписаться
-                на автора
-            </button>
-        </p>
+
+    <div class="author-subscribe" data-author="{{ author.id}}">
+        {% if request.user.is_authenticated and request.user != author %}
+            {% if author|is_subscribe:user %}
+                <button class="button button_style_light-blue button_size_auto" name="subscribe">
+                    <span class="icon-check button__icon"></span>Отписаться от автора
+                </button></p>
+            {% else %}
+
+                <p style="padding: 0 0 2em 0;">
+                    <button class="button button_style_light-blue button_size_auto"
+                            name="subscribe" data-out>Подписаться на автора
+                    </button>
+                </p>
+            {% endif %}
+        {% endif %}
     </div>
+    {#    <!--        <p style="padding: 0 0 2em 0;"><a class="button button_style_light-blue" href="#">Подписаться на автора</a></p>-->#}
+    {#    {% if user.is_authenticated %}#}
+    {#        {% if recipe.author|is_subscribe:request.user %}#}
+    {#            <div class="author-subscribe" data-author="{{ recipe.author.id }}">#}
+    {#                <p style="padding: 0 0 2em 0;">#}
+    {#                    <button class="button button_style_light-blue-outline button_size_subscribe" name="subscribe">#}
+    {#                        Отписаться#}
+    {#                        от автора#}
+    {#                    </button>#}
+    {#                </p>#}
+    {#            </div>#}
+    {#            <button class="button button_style_none" name="subscribe"><span#}
+    {#                    class="icon-favorite icon-favorite_big icon-favorite_active"></span></button>#}
+    {#        {% else %}#}
+    {#            <div class="author-subscribe" data-author="{{ recipe.author.id }}">#}
+    {#                <p style="padding: 0 0 2em 0;">#}
+    {#                    <button class="button button_style_light-blue button_size_subscribe" name="subscribe" data-out>#}
+    {#                        Подписаться#}
+    {#                        на автора#}
+    {#                    </button>#}
+    {#                </p>#}
+    {#            </div>#}
+    {#            <button class="button button_style_none" name="subscribe" data-out><span#}
+    {#                    class="icon-favorite icon-favorite_big"></span></button>#}
+    {#        {% endif %}#}
+    {#        <div class="single-card__favorite-tooltip tooltip">Добавить в избранное</div>#}
+    {#                    <button class="button button_style_none" name="favorites" data-out><span#}
+    {#                            class="icon-favorite icon-favorite_big"></span></button>#}
+    {##}
+    {#    {% endif %}#}
+    {#    <div class="author-subscribe" data-author="323">#}
+    {#        <p style="padding: 0 0 2em 0;">#}
+    {#            <button class="button button_style_light-blue button_size_subscribe" name="subscribe" data-out>Подписаться#}
+    {#                на автора#}
+    {#            </button>#}
+    {#        </p>#}
+    {#    </div>#}
     <div class="card-list">
         {% for recipe in page %}
             {% include 'recipes/recipe.html' %}

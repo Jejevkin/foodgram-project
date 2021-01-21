@@ -1,5 +1,6 @@
 from django import template
-from recipes.models import FavoriteRecipe, Tag
+from recipes.models import FavoriteRecipe, Tag, Subscription
+import pymorphy2
 
 register = template.Library()
 
@@ -34,3 +35,21 @@ def change_tag_link(request, tag):
     else:
         copy.appendlist('tag', tag.slug)
     return copy.urlencode()
+
+
+@register.filter
+def is_subscribe(author, user):
+    return Subscription.objects.filter(author=author, user=user).exists()
+
+
+@register.filter
+def subtract(num1, num2):
+    return num1 - num2
+
+
+@register.filter
+def word_form(word, number):
+    morph = pymorphy2.MorphAnalyzer()
+    default_word = morph.parse(word)[0]
+    changed_word = default_word.make_agree_with_number(number).word
+    return changed_word

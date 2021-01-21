@@ -7,7 +7,12 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Создание рецепта</title>
+
+    {% if recipe %}
+        <title>Редактирование рецепта</title>
+    {% else %}
+        <title>Создание рецепта</title>
+    {% endif %}
     <link rel="stylesheet" href="{% static 'pages/form.css' %}">
 </head>
 <body class="body">
@@ -16,7 +21,12 @@
 </header>
 <main class="main container">
     <div class="main__header">
-        <h1 class="main__title">Создание рецепта</h1>
+        {% if recipe %}
+            <h1 class="main__title">Редактирование рецепта</h1>
+        {% else %}
+            <h1 class="main__title">Создание рецепта</h1>
+        {% endif %}
+
     </div>
     <div class="form-container">
         <form class="form" method="post" enctype="multipart/form-data">
@@ -78,7 +88,20 @@
                         <label for="cantidad" class="form__label" id="cantidadVal">шт.</label>
                     </div>
                     <div class="form__field-group-ingredientes-container">
-
+                        {% for ingredient in recipe.recipe_amount.all %}
+                            <div class="form__field-item-ingredient" id="ing_{{ forloop.counter }}">
+                                <span> {{ ingredient.ingredient.title }} {{ ingredient.amount }}г</span> <span
+                                    class="form__field-item-delete"></span>
+                                <input id="nameIngredient_{{ forloop.counter }}"
+                                       name="nameIngredient_{{ forloop.counter }}" type="hidden"
+                                       value="{{ ingredient.ingredient.title }}">
+                                <input id="valueIngredient_{{ forloop.counter }}"
+                                       name="valueIngredient_{{ forloop.counter }}" type="hidden"
+                                       value="{{ ingredient.amount }}">
+                                <input id="unitsIngredient_{{ forloop.counter }}"
+                                       name="unitsIngredient_{{ forloop.counter }}" type="hidden"
+                                       value="{{ ingredient.ingredient.dimension }}"></div>
+                        {% endfor %}
                     </div>
                     <span class="form__ingredient-link" id="addIng">Добавить ингредиент</span>
                     {% if form.ingredients.errors %}
@@ -133,7 +156,12 @@
                 </div>
             </div>
             <div class="form__footer">
-                <button class="button button_style_blue">Создать рецепт</button>
+                {% if recipe %}
+                    <button class="button button_style_blue">Сохранить изменения</button>
+                {% else %}
+                    <button class="button button_style_blue">Создать рецепт</button>
+                {% endif %}
+
             </div>
         </form>
     </div>

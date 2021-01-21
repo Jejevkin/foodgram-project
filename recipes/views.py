@@ -44,6 +44,32 @@ def new_recipe(request):
             return redirect("index")
 
 
+@login_required
+def recipe_edit(request, username, recipe_id):
+    author = get_object_or_404(User, username=username)
+    recipe = get_object_or_404(author.author_recipes, pk=recipe_id)
+    if author != request.user:
+        return redirect('post_view', username, recipe_id)
+    else:
+        form = RecipeForm(request.POST or None, files=request.FILES or None,
+                          instance=recipe)
+        if request.method == 'POST':
+            if form.is_valid():
+                form.save()
+                ingredients = get_ingredients(request)
+                for ing_title, amount in ingredients.items():
+                    # print(f'{ing_title} - {amount}')
+                    ingredient = get_object_or_404(Ingredient, title=ing_title)
+                    recipe_ing = RecipeIngredient(
+                        recipe=recipe, ingredient=ingredient, amount=amount
+                    )
+                    # print(recipe_ing)
+                    recipe_ing.save()
+                return redirect('recipe_view', username, recipe_id)
+        return render(request, 'recipes/new_recipe.html',
+                      {'form': form, 'recipe': recipe})
+
+
 def profile(request, username):
     tags = request.GET.getlist('tag')
     author = get_object_or_404(User, username=username)

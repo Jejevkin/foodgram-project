@@ -6,9 +6,10 @@ from django.views import View
 from rest_framework.viewsets import ViewSet
 from django.contrib.auth.decorators import login_required
 import json
+from django.conf import settings
 
-from recipes.models import Ingredient, Recipe, FavoriteRecipe, User, \
-    Subscription
+from recipes.models import (Ingredient, Recipe, FavoriteRecipe, User,
+                            Subscription)
 
 from .serializers import IngredientSerializer
 
@@ -60,4 +61,35 @@ class SubscriptionView(LoginRequiredMixin, View):
         author = get_object_or_404(Subscription, author=author_id,
                                    user=request.user)
         author.delete()
+        return JsonResponse({'success': True})
+
+
+class ShoppingListView(View):
+    def post(self, request):
+        req = json.loads(request.body)
+        recipe_id = req.get('id', None)
+        if recipe_id is not None:
+            if settings.PURCHASE_SESSION_ID not in request.session:
+                request.session[settings.PURCHASE_SESSION_ID] = list()
+            if recipe_id not in request.session[settings.PURCHASE_SESSION_ID]:
+                request.session[settings.PURCHASE_SESSION_ID].append(recipe_id)
+                request.session.save()
+                print(request.session[settings.PURCHASE_SESSION_ID])
+                return JsonResponse({'success': True})
+            return JsonResponse({'success': False})
+        return JsonResponse({'success': False}, status=400)
+        #     if request.session.get(recipe_id, False):
+        #         return JsonResponse({'success': False})
+        #     request.session[recipe_id] = True
+        #     return JsonResponse({'success': True})
+        # return JsonResponse({'success': False}, status=400)
+
+    def delete(self, request, recipe_id):
+        print(recipe_id)
+        # request.session[settings]
+
+        request.session[settings.PURCHASE_SESSION_ID].remove(str(recipe_id))
+        request.session.save()
+        print(request.session[settings.PURCHASE_SESSION_ID])
+        # del request.session[str(recipe_id)]
         return JsonResponse({'success': True})

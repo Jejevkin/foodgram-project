@@ -30,11 +30,11 @@
 
     </div>
 
-    <div class="author-subscribe" data-author="{{ author.id}}">
+    <div class="author-subscribe" data-author="{{ author.id }}">
         {% if request.user.is_authenticated and request.user != author %}
             {% if author|is_subscribe:user %}
                 <button class="button button_style_light-blue button_size_auto" name="subscribe">
-                    <span class="icon-check button__icon"></span>Отписаться от автора
+                    Отписаться от автора
                 </button></p>
             {% else %}
 

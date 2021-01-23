@@ -5,6 +5,7 @@ from .forms import RecipeForm
 from .models import (Recipe, Ingredient, RecipeIngredient, User,
                      FavoriteRecipe, Subscription)
 from .utils import get_ingredients
+from django.conf import settings
 
 
 def index(request):
@@ -127,3 +128,9 @@ def subscriptions_index(request):
     page = paginator.get_page(page_number)
     return render(request, 'recipes/subscription.html',
                   {'page': page, 'paginator': paginator})
+
+
+def shopping_list(request):
+    recipes = Recipe.objects.filter(
+        pk__in=request.session[settings.PURCHASE_SESSION_ID])
+    return render(request, 'recipes/shopping_list.html', {'recipes': recipes})

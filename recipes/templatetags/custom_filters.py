@@ -1,6 +1,8 @@
 from django import template
 from recipes.models import FavoriteRecipe, Tag, Subscription
+# from api.views import ShoppingList
 import pymorphy2
+from django.conf import settings
 
 register = template.Library()
 
@@ -53,3 +55,22 @@ def word_form(word, number):
     default_word = morph.parse(word)[0]
     changed_word = default_word.make_agree_with_number(number).word
     return changed_word
+
+
+@register.filter
+def in_shopping_list(request, recipe_id):
+    try:
+        # print(f'{request.session[settings.PURCHASE_SESSION_ID]} - это фильтр')
+        # print(recipe_id)
+        return str(recipe_id) in request.session[settings.PURCHASE_SESSION_ID]
+        # return request.session[str(recipe_id)]
+    except KeyError:
+        return False
+
+
+@register.filter
+def shopping_count(request):
+    try:
+        return len(request.session[settings.PURCHASE_SESSION_ID])
+    except KeyError:
+        return 0

@@ -32,9 +32,15 @@
         </div>
     </div>
     <div class="card__footer">
-        <button class="button button_style_light-blue" name="purchases" data-out><span
-                class="icon-plus button__icon"></span>Добавить в покупки
-        </button>
+        {% if request|in_shopping_list:recipe.id %}
+            <button class="button button_style_light-blue" name="purchases"><span
+                    class="icon-check button__icon"></span>Рецепт добавлен
+            </button>
+        {% else %}
+            <button class="button button_style_light-blue" name="purchases" data-out><span
+                    class="icon-plus  button__icon"></span>Добавить в покупки
+            </button>
+        {% endif %}
         {% if user.is_authenticated %}
             {% if recipe|is_favorite:request.user %}
                 <button class="button button_style_none" name="favorites"><span

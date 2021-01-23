@@ -9,6 +9,8 @@ urlpatterns = [
     path('subscription/', views.subscriptions_index,
          name='subscription'),
     path('shopping/', views.shopping_list, name='shopping_list'),
+    path('shopping/<int:recipe_id>/', views.delete_purchase,
+         name='delete_purchase'),
     path('<username>/', views.profile, name='profile'),
     path('<username>/<int:recipe_id>/', views.recipe_view, name='recipe_view'),
     path('<username>/<int:recipe_id>/edit/', views.recipe_edit,

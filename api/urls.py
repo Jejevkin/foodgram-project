@@ -14,7 +14,7 @@ urlpatterns = [
     path('v1/subscriptions/', SubscriptionView.as_view()),
     path('v1/subscriptions/<int:author_id>/', SubscriptionView.as_view()),
     path('v1/purchases/', ShoppingListView.as_view()),
-    path('v1/purchases/<str:recipe_id>/', ShoppingListView.as_view()),
+    path('v1/purchases/<int:recipe_id>/', ShoppingListView.as_view()),
     # path('v1/', include(router_v1.urls)),
 
 ]

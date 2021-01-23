@@ -134,3 +134,9 @@ def shopping_list(request):
     recipes = Recipe.objects.filter(
         pk__in=request.session[settings.PURCHASE_SESSION_ID])
     return render(request, 'recipes/shopping_list.html', {'recipes': recipes})
+
+
+def delete_purchase(request, recipe_id):
+    request.session[settings.PURCHASE_SESSION_ID].remove(str(recipe_id))
+    request.session.save()
+    return redirect('shopping_list')

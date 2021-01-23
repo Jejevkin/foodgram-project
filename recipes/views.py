@@ -41,7 +41,7 @@ def new_recipe(request):
                 )
                 # print(recipe_ing)
                 recipe_ing.save()
-            return redirect("index")
+            return redirect('index')
 
 
 @login_required
@@ -68,6 +68,17 @@ def recipe_edit(request, username, recipe_id):
                 return redirect('recipe_view', username, recipe_id)
         return render(request, 'recipes/new_recipe.html',
                       {'form': form, 'recipe': recipe})
+
+
+@login_required
+def recipe_delete(request, username, recipe_id):
+    author = get_object_or_404(User, username=username)
+    recipe = get_object_or_404(author.author_recipes, pk=recipe_id)
+    if author != request.user:
+        return redirect('post_view', username, recipe_id)
+    else:
+        recipe.delete()
+    return redirect('index')
 
 
 def profile(request, username):

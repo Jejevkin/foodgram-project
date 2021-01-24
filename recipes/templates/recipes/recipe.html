@@ -10,11 +10,7 @@
                 height="{{ im.height }}"
                 alt="{{ recipe.title }}"
                 class="card__image"></a>
-        {#        <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" alt="{{ recipe.title }}"#}
-        {#             class="card__image">#}
     {% endthumbnail %}
-    {#    <a href="#" class="link" target="_blank"><img src="images/testCardImg.png" alt="Какой-то текст"#}
-    {#                                                  class="card__image"></a>#}
     <div class="card__body">
         <a class="card__title link" href="{% url 'recipe_view' recipe_id=recipe.id username=recipe.author %}"
            target="_blank">{{ recipe.title }}</a>
@@ -57,8 +53,6 @@
                     <button class="button button_style_none" name="favorites" data-out><span
                             class="icon-favorite icon-favorite_big"></span></button>
                 {% endif %}
-                {#                    <button class="button button_style_none" name="favorites" data-out><span#}
-                {#                            class="icon-favorite icon-favorite_big"></span></button>#}
             {% endwith %}
         {% endif %}
     </div>

@@ -12,7 +12,7 @@ from .models import (FavoriteRecipe, Ingredient, Recipe, RecipeIngredient,
                      Subscription, User)
 from .utils import get_ingredients
 
-logging.basicConfig(filename="log.txt", level=logging.INFO)
+logging.basicConfig(filename='log.txt', level=logging.INFO)
 
 
 def index(request):

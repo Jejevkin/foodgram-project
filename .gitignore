@@ -130,3 +130,5 @@ dmypy.json
 .idea/
 
 log.txt
+media/
+sent_emails/

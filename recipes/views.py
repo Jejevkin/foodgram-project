@@ -94,7 +94,6 @@ def profile(request, username):
     paginator = Paginator(post_list, 6)
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
-    # на кастомную страницу
     return render(request, 'recipes/profile.html',
                   {'author': author, 'page': page, 'paginator': paginator})
 
@@ -113,7 +112,8 @@ def favorite_recipe(request):
     paginator = Paginator(favorite_list, 6)
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
-    # на кастомную страницу
+    if len(page) == 0:
+        return render(request, 'recipes/custom_page.html')
     return render(request, 'recipes/favorite.html',
                   {'page': page, 'paginator': paginator})
 
@@ -124,7 +124,8 @@ def subscriptions_index(request):
     paginator = Paginator(subscriptions_list, 3)
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
-    # на кастомную страницу
+    if len(page) == 0:
+        return render(request, 'recipes/custom_page.html')
     return render(request, 'recipes/subscription.html',
                   {'page': page, 'paginator': paginator})
 
@@ -135,7 +136,9 @@ def shopping_list(request):
             pk__in=request.session[settings.PURCHASE_SESSION_ID])
     except Exception as e:
         logging.error(str(e))
-        recipes = []  # на кастомную страницу
+        return render(request, 'recipes/custom_page.html')
+    if len(recipes) == 0:
+        return render(request, 'recipes/custom_page.html')
     return render(request, 'recipes/shopping_list.html', {'recipes': recipes})
 
 
@@ -144,7 +147,8 @@ def delete_purchase(request, recipe_id):
         request.session[settings.PURCHASE_SESSION_ID].remove(str(recipe_id))
         request.session.save()
         return redirect('shopping_list')
-    except ValueError:
+    except Exception as e:
+        logging.error(str(e))
         return redirect('shopping_list')
 
 
@@ -168,7 +172,7 @@ def save_shopping_list(request):
         return response
     except Exception as e:
         logging.error(str(e))
-        recipes = []  # на кастомную страницу
+        return render(request, 'recipes/custom_page.html')
 
 
 def page_not_found(request, exception):
@@ -178,4 +182,3 @@ def page_not_found(request, exception):
 
 def server_error(request):
     return render(request, 'misc/500.html', status=500)
-

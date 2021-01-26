@@ -1,6 +1,7 @@
-from django.core.management.base import BaseCommand
-from recipes.models import Ingredient
 import csv
+
+from django.core.management.base import BaseCommand
+from recipes.models import Ingredient, Tag
 
 
 class Command(BaseCommand):
@@ -13,3 +14,8 @@ class Command(BaseCommand):
                 title, dimension = row
                 Ingredient.objects.get_or_create(title=title,
                                                  dimension=dimension)
+
+        Tag.objects.get_or_create(name='завтрак', slug='breakfast',
+                                  colors='orange')
+        Tag.objects.get_or_create(name='обед', slug='lunch', colors='green')
+        Tag.objects.get_or_create(name='ужин', slug='dinner', colors='purple')

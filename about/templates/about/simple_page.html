@@ -1,11 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 {% load custom_filters %}
-
-{% block title %}
-    Вы вышли из системы
-{% endblock %}
-
+{% block title %}{{ title }}{% endblock %}
 {% block static %}
     <link rel="stylesheet" href="{% static 'pages/index.css' %}">
 {% endblock %}
@@ -13,8 +9,8 @@
 {% block content %}
     <main class="main container">
         <div class="custom-center-block">
-            <h1 class="main__title">Вы вышли из системы</h1>
-            <p class="custom-text-block">Вы вышли из своей учётной записи. Ждём вас снова!</p>
+            <h1 class="main__title">{{ title }}</h1>
+            <p class="custom-text-block">{{ text }}</p>
             <div class="custom-button-block">
                 <a href="{% url  'index' %}">
                     <button class="button button_style_blue">Перейти на главную</button>

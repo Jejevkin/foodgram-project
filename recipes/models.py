@@ -64,7 +64,7 @@ class RecipeIngredient(models.Model):
                                    related_name='ingredient_amount')
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE,
                                related_name='recipe_amount')
-    amount = models.IntegerField()
+    amount = models.PositiveIntegerField(validators=[MinValueValidator(1)])
 
 
 class FavoriteRecipeManager(models.Manager):
@@ -110,3 +110,22 @@ class Subscription(models.Model):
 
     def __str__(self):
         return f'{self.pk} - {self.user} - {self.author}'
+
+
+class ShoppingListManager(models.Manager):
+
+    @staticmethod
+    def shopping_cart(user):
+        shop_obj = ShoppingList.objects.filter(user=user)
+        recipes_id = shop_obj.values_list('recipe', flat=True)
+        cart = Recipe.objects.filter(pk__in=recipes_id)
+        return cart
+
+
+class ShoppingList(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, )
+    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, )
+    objects = ShoppingListManager()
+
+    def __str__(self):
+        return f'{self.pk} - {self.user} - {self.recipe}'

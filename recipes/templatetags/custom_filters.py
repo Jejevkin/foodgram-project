@@ -1,7 +1,7 @@
 import pymorphy2
 from django import template
 from django.conf import settings
-from recipes.models import FavoriteRecipe, Subscription, Tag
+from recipes.models import FavoriteRecipe, ShoppingList, Subscription, Tag
 
 register = template.Library()
 
@@ -57,16 +57,23 @@ def word_form(word, number):
 
 
 @register.filter
-def in_shopping_list(request, recipe_id):
-    try:
-        return str(recipe_id) in request.session[settings.PURCHASE_SESSION_ID]
-    except KeyError:
-        return False
+def in_shopping_list(request, recipe):
+    if request.user.is_authenticated:
+        return ShoppingList.objects.filter(user=request.user, recipe=recipe)
+    else:
+        try:
+            return str(recipe.id) in request.session[
+                settings.PURCHASE_SESSION_ID]
+        except KeyError:
+            return False
 
 
 @register.filter
 def shopping_count(request):
-    try:
-        return len(request.session[settings.PURCHASE_SESSION_ID])
-    except KeyError:
-        return 0
+    if request.user.is_authenticated:
+        return ShoppingList.objects.filter(user=request.user).count()
+    else:
+        try:
+            return len(request.session[settings.PURCHASE_SESSION_ID])
+        except KeyError:
+            return 0

@@ -61,7 +61,7 @@
 
                 <ul class="single-card__items">
                     <li class="single-card__item">
-                        {% if request|in_shopping_list:recipe.id %}
+                        {% if request|in_shopping_list:recipe %}
                             <button class="button button_style_light-blue" name="purchases"><span
                                     class="icon-check button__icon"></span>Рецепт добавлен
                             </button>

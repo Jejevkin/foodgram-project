@@ -6,8 +6,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from django.views import View
-from recipes.models import (FavoriteRecipe, Ingredient, Recipe, Subscription,
-                            User)
+from recipes.models import (FavoriteRecipe, Ingredient, Recipe, ShoppingList,
+                            Subscription, User)
 from rest_framework.decorators import api_view
 
 from .serializers import IngredientSerializer
@@ -25,7 +25,7 @@ def ingredients(request):
 class FavoritesView(LoginRequiredMixin, View):
     def post(self, request):
         req = json.loads(request.body)
-        recipe_id = req.get('id', None)
+        recipe_id = req.get('id')
         if recipe_id is not None:
             recipe = get_object_or_404(Recipe, pk=recipe_id)
             obj, created = FavoriteRecipe.objects.get_or_create(
@@ -45,8 +45,7 @@ class FavoritesView(LoginRequiredMixin, View):
 class SubscriptionView(LoginRequiredMixin, View):
     def post(self, request):
         req = json.loads(request.body)
-        print(req)
-        author_id = req.get('id', None)
+        author_id = req.get('id')
         if author_id is not None:
             author = get_object_or_404(User, pk=author_id)
             obj, created = Subscription.objects.get_or_create(
@@ -66,20 +65,37 @@ class SubscriptionView(LoginRequiredMixin, View):
 class ShoppingListView(View):
     def post(self, request):
         req = json.loads(request.body)
-        recipe_id = req.get('id', None)
+        recipe_id = req.get('id')
         if recipe_id is not None:
-            
-            if settings.PURCHASE_SESSION_ID not in request.session:
-                request.session[settings.PURCHASE_SESSION_ID] = list()
 
-            if recipe_id not in request.session[settings.PURCHASE_SESSION_ID]:
-                request.session[settings.PURCHASE_SESSION_ID].append(recipe_id)
-                request.session.save()
-                return JsonResponse({'success': True})
+            if request.user.is_authenticated:
+                recipe = get_object_or_404(Recipe, id=recipe_id)
+                obj, created = ShoppingList.objects.get_or_create(
+                    user=request.user, recipe=recipe)
+                if created:
+                    return JsonResponse({"success": True})
+
+            else:
+                if settings.PURCHASE_SESSION_ID not in request.session:
+                    request.session[settings.PURCHASE_SESSION_ID] = list()
+
+                if recipe_id not in request.session[
+                    settings.PURCHASE_SESSION_ID]:
+                    request.session[settings.PURCHASE_SESSION_ID].append(
+                        recipe_id)
+                    request.session.save()
+                    return JsonResponse({'success': True})
+
             return JsonResponse({'success': False})
         return JsonResponse({'success': False}, status=400)
 
     def delete(self, request, recipe_id):
-        request.session[settings.PURCHASE_SESSION_ID].remove(str(recipe_id))
-        request.session.save()
+        if request.user.is_authenticated:
+            card_obj = get_object_or_404(ShoppingList, user=request.user,
+                                         recipe_id=recipe_id)
+            card_obj.delete()
+        else:
+            request.session[settings.PURCHASE_SESSION_ID].remove(
+                str(recipe_id))
+            request.session.save()
         return JsonResponse({'success': True})

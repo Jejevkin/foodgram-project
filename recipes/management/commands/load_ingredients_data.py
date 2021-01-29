@@ -15,7 +15,7 @@ class Command(BaseCommand):
                 Ingredient.objects.get_or_create(title=title,
                                                  dimension=dimension)
 
-        Tag.objects.get_or_create(name='завтрак', slug='breakfast',
-                                  colors='orange')
-        Tag.objects.get_or_create(name='обед', slug='lunch', colors='green')
-        Tag.objects.get_or_create(name='ужин', slug='dinner', colors='purple')
+        Tag.objects.get_or_create(title='завтрак', slug='breakfast',
+                                  color='orange')
+        Tag.objects.get_or_create(title='обед', slug='lunch', color='green')
+        Tag.objects.get_or_create(title='ужин', slug='dinner', color='purple')

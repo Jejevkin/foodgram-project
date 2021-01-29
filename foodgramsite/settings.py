@@ -127,8 +127,8 @@ INTERNAL_IPS = [
 ]
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static_prod')
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static_dev')]
+# STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
@@ -141,7 +141,8 @@ LOGOUT_REDIRECT_URL = '/'
 
 PURCHASE_SESSION_ID = 'purchase'
 
-#  подключаем движок filebased.EmailBackend
 EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
-# указываем директорию, в которую будут складываться файлы писем
+
 EMAIL_FILE_PATH = os.path.join(BASE_DIR, "sent_emails")
+
+RECIPES_ON_PAGE = 6

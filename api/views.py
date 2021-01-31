@@ -67,9 +67,8 @@ class ShoppingListView(View):
         req = json.loads(request.body)
         recipe_id = req.get('id')
         if recipe_id is not None:
-
+            recipe = get_object_or_404(Recipe, id=recipe_id)
             if request.user.is_authenticated:
-                recipe = get_object_or_404(Recipe, id=recipe_id)
                 obj, created = ShoppingList.objects.get_or_create(
                     user=request.user, recipe=recipe)
                 if created:

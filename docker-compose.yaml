@@ -30,7 +30,7 @@ services:
       - web
     ports:
       - 80:80
-      - 403:403
+      - 443:443
     volumes:
       - ./nginx:/etc/nginx/conf.d/
       - static_volume:/code/static/
@@ -38,10 +38,11 @@ services:
       - ./data/certbot/conf:/etc/letsencrypt
       - ./data/certbot/www:/var/www/certbot
     command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
-    restart: always
+    restart: unless-stopped
 
   certbot:
     image: certbot/certbot
+    restart: unless-stopped
     depends_on:
       - web
     volumes:

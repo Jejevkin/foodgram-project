@@ -26,9 +26,11 @@ SECRET_KEY = 'd6=4ld+s8md12h_pl_6_w1n_4zizj-rt6+8h0*%+kyuh%7l6d6'
 DEBUG = False
 
 ALLOWED_HOSTS = [
-    '*',
+    '84.252.129.249',
     'localhost',
     '127.0.0.1',
+    'foodgram-project.site',
+    'www.foodgram-project.site',
 ]
 
 # Application definition

@@ -30,9 +30,17 @@ services:
       - web
     ports:
       - 80:80
+      - 403:403
     volumes:
       - ./nginx:/etc/nginx/conf.d/
       - static_volume:/code/static/
       - media_volume:/code/media/
+      - ./data/certbot/conf:/etc/letsencrypt
+      - ./data/certbot/www:/var/www/certbot
     restart: always
 
+  certbot:
+    image: certbot/certbot
+    volumes:
+      - ./data/certbot/conf:/etc/letsencrypt
+      - ./data/certbot/www:/var/www/certbot

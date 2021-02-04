@@ -23,32 +23,32 @@
    ```
    chmod +x letsencrypt.sh
    ```  
-   и 
-```
-./letsencrypt.sh
-```
-Выполнив последнюю команду, появится `data` с сертификатами необходимые для работы `nginx` и `certbot`.
+   и  
+   ```
+   ./letsencrypt.sh
+   ```  
+   Выполнив последнюю команду, появится `data` с сертификатами необходимые для работы `nginx` и `certbot`.
 
-4) Запустите процесс сборки и запуска контейнеров:
-```
-docker-compose up
-```
-5) Чтобы применить миграции, введите:
-```
-docker-compose -f docker-compose.yaml exec web python manage.py migrate --noinput
-```
-6) Для создания суперпользователя, необходимо ввести:
-```
-docker-compose -f docker-compose.yaml exec web python manage.py createsuperuser
-```
-7) Чтобы добавить в базу ингредиенты и теги:
-```
-docker-compose -f docker-compose.yaml exec web python manage.py load_ingredients_data
-```
-8) Остановить работу можно командой:
-```
-docker-compose stop
-```
+4) Запустите процесс сборки и запуска контейнеров:  
+   ```
+   docker-compose up
+   ```
+5) Чтобы применить миграции, введите:  
+   ```
+   docker-compose -f docker-compose.yaml exec web python manage.py migrate --noinput
+   ```
+6) Для создания суперпользователя, необходимо ввести:  
+   ```
+   docker-compose -f docker-compose.yaml exec web python manage.py createsuperuser
+   ```
+7) Чтобы добавить в базу ингредиенты и теги:  
+   ```
+   docker-compose -f docker-compose.yaml exec web python manage.py load_ingredients_data
+   ```
+8) Остановить работу можно командой:  
+   ```
+   docker-compose stop
+   ```
 
 ## Технологии
 * [Python](https://www.python.org/) - высокоуровневый язык программирования общего назначения;

@@ -1,3 +1,4 @@
+![foodgram-project workflow](https://github.com/Jejevkin/foodgram-project/workflows/main/badge.svg)
 
 # foodgram-project — [«Продуктовый помощник»](https://foodgram-project.site/)
 

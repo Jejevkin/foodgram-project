@@ -29,8 +29,12 @@
                     <h1 class="main__title">Мои подписки</h1>
                     <p class="custom-text-block">Вы ни на кого не подписаны</p>
                 {% elif 'favorite_recipe' in current_url %}
-                    <h1 class="main__title">Избранное</h1>
-                    <p class="custom-text-block">У вас нет избранных рецептов</p>
+                    <div class="main__header">
+                        <h1 class="main__title">Избранное</h1>
+                        {% include 'recipes/tags.html' %}
+                    </div>
+                    <p class="custom-text-block">У вас нет избранных рецептов (либо нет рецептов отмеченных данным
+                        тегом)</p>
                 {% endif %}
             {% endwith %}
 

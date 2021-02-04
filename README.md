@@ -12,6 +12,7 @@
   git clone https://github.com/Jejevkin/foodgram-project.git
   ```
 2. Создайте файл .env и заполните его своими значениями. Все нужные переменные и их примерные значения описаны файле .env.template.
+====
 
 3. Для получения SSL-сертификатов откройте `letsencrypt.sh` и впишите:
 
@@ -28,6 +29,7 @@
   ./letsencrypt.sh
   ```
   Выполнив последнюю команду, появится `data` с сертификатами необходимые для работы `nginx` и `certbot`.
+  ====
 
 4. Запустите процесс сборки и запуска контейнеров:
   ```
@@ -53,6 +55,7 @@
 ## Технологии
 * [Python](https://www.python.org/) - высокоуровневый язык программирования общего назначения;
 * [Django](https://www.djangoproject.com/) - фреймворк для веб-приложений;
+* [Django REST framework](https://www.django-rest-framework.org/) - API фреймворк для Django;
 * [PostgreSQL](https://www.postgresql.org/) - объектно-реляционная система управления базами данных;
 * [Nginx](https://nginx.org/) - HTTP-сервер и обратный прокси-сервер, почтовый прокси-сервер, а также TCP/UDP прокси-сервер общего назначения;
 * [Certbot](https://certbot.eff.org/) - программный инструмент для автоматического использования сертификатов [Let’s Encrypt](https://letsencrypt.org/);

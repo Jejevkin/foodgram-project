@@ -9,7 +9,7 @@
 
 1) Клонируйте репозиторий на локальную машину.
 ```
-> git clone https://github.com/Jejevkin/foodgram-project.git
+git clone https://github.com/Jejevkin/foodgram-project.git
 ```
 2) Создайте файл .env и заполните его своими значениями. Все нужные переменные и их примерные значения описаны файле .env.template.
 
@@ -21,33 +21,33 @@
 
 > Затем запустите:
 ```
-> chmod +x letsencrypt.sh
+chmod +x letsencrypt.sh
 ```
-> и 
+             и 
 ```
-> ./letsencrypt.sh
+./letsencrypt.sh
 ```
 > Выполнив последнюю команду, появится `data` с сертификатами необходимые для работы `nginx` и `certbot`.
 
 4) Запустите процесс сборки и запуска контейнеров:
 ```
-> docker-compose up
+docker-compose up
 ```
 5) Чтобы применить миграции, введите:
 ```
-> docker-compose -f docker-compose.yaml exec web python manage.py migrate --noinput
+docker-compose -f docker-compose.yaml exec web python manage.py migrate --noinput
 ```
 6) Для создания суперпользователя, необходимо ввести:
 ```
-> docker-compose -f docker-compose.yaml exec web python manage.py createsuperuser
+docker-compose -f docker-compose.yaml exec web python manage.py createsuperuser
 ```
 7) Чтобы добавить в базу ингредиенты и теги:
 ```
-> docker-compose -f docker-compose.yaml exec web python manage.py load_ingredients_data
+docker-compose -f docker-compose.yaml exec web python manage.py load_ingredients_data
 ```
 8) Остановить работу можно командой:
 ```
-> docker-compose stop
+docker-compose stop
 ```
 
 ## Технологии

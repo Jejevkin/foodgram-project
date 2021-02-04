@@ -64,7 +64,7 @@ jobs:
           username: ${{ secrets.USER }}
           key: ${{ secrets.SSH_KEY }}
           passphrase: ${{ secrets.PASSPHRASE }}
-          source: "nginx/nginx.conf, ./docker-compose.yaml"
+          source: "nginx/nginx.conf, ./docker-compose.yaml, ./letsencrypt.sh"
           target: "/home/jejevkin/code"
 
       - name: Executing remote ssh commands to deploy

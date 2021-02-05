@@ -77,3 +77,10 @@ def shopping_count(request):
             return len(request.session[settings.PURCHASE_SESSION_ID])
         except KeyError:
             return 0
+
+
+@register.filter
+def change_page_url(request, page):
+    copy = request.GET.copy()
+    copy['page'] = page
+    return copy.urlencode()

@@ -83,7 +83,7 @@ jobs:
             echo "$ENV_FILE" | sudo tee .env
             sudo docker rmi jejevkin/foodgram_project -f
             sudo docker pull jejevkin/foodgram_project:latest
-            sudo docker-compose up -d --remove-orphans --force-recreate
+            sudo docker-compose up -d --remove-orphans --force-recreate web
   send_message:
     if: contains(github.ref, 'master')
     runs-on: ubuntu-latest

@@ -28,7 +28,7 @@
    ```
    ./letsencrypt.sh
    ```  
-   Выполнив последнюю команду, появится `data` с сертификатами необходимые для работы `nginx` и `certbot`.
+   Выполнив последнюю команду, появится `data` с сертификатами, необходимыми для работы `nginx` и `certbot`.
 
 4) Запустите процесс сборки и запуска контейнеров:  
    ```
@@ -46,7 +46,11 @@
    ```
    docker-compose -f docker-compose.yaml exec web python manage.py load_ingredients_data
    ```
-8) Остановить работу можно командой:  
+8) Чтобы собрать статические файлы, используйте команду:  
+   ```
+   docker-compose -f docker-compose.yaml exec web python manage.py collectstatic
+   ```
+9) Остановить работу можно командой:  
    ```
    docker-compose stop
    ```

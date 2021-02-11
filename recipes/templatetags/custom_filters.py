@@ -29,6 +29,8 @@ def get_active_tags(value):
 @register.filter
 def change_tag_link(request, tag):
     copy = request.GET.copy()
+    if copy.getlist('page'):
+        copy.pop('page')
     tag_link = copy.getlist('tag')
     if tag.slug in tag_link:
         tag_link.remove(tag.slug)

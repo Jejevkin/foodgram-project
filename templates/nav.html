@@ -5,8 +5,8 @@
             {% with current_url=request.resolver_match.url_name %}
                 {% if user.is_authenticated %}
                     <ul class="nav__items list">
-                        <li class="nav__item {% if 'index' in current_url %}nav__item_active{% endif %}"><a
-                                href="{% url 'index' %}" class="nav__link link">Рецепты</a></li>
+                        <li class="nav__item {% if 'index' in current_url or 'recipe_view' in current_url or 'profile' in current_url %}nav__item_active{% endif %}">
+                            <a href="{% url 'index' %}" class="nav__link link">Рецепты</a></li>
                         <li class="nav__item {% if 'subscription' in current_url %}nav__item_active{% endif %}"><a
                                 href="{% url 'subscription' %}" class="nav__link link">Мои подписки</a></li>
                         <li class="nav__item {% if 'new_recipe' in current_url %}nav__item_active{% endif %}"><a
@@ -21,15 +21,15 @@
                     <ul class="nav__items list">
                         <li class="nav__item"><a href="{% url 'profile' username=user.username %}"
                                                  class="nav__link link">{{ user.username }}</a></li>
-                        <li class="nav__item"><a href="{% url 'password_change' %}" class="nav__link link">Изменить
+                        <li class="nav__item {% if 'password_change' in current_url %}nav__item_active{% endif %}"><a
+                                href="{% url 'password_change' %}" class="nav__link link">Изменить
                             пароль</a></li>
                         <li class="nav__item"><a href="{% url 'logout' %}" class="nav__link link">Выход</a></li>
                     </ul>
                 {% else %}
                     <ul class="nav__items list">
-                        <li class="nav__item {% if 'index' in current_url %}nav__item_active{% endif %}"><a
-                                href="{% url 'index' %}" class="nav__link link">Рецепты</a>
-                        </li>
+                        <li class="nav__item {% if 'index' in current_url or 'recipe_view' in current_url or 'profile' in current_url %}nav__item_active{% endif %}">
+                            <a href="{% url 'index' %}" class="nav__link link">Рецепты</a></li>
                         <li class="nav__item {% if 'shopping' in current_url %}nav__item_active{% endif %}"><a
                                 href="{% url 'shopping_list' %}" class="nav__link link">Список покупок <span
                                 class="badge badge_style_blue nav__badge"

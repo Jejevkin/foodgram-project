@@ -174,3 +174,7 @@ EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
 EMAIL_FILE_PATH = os.path.join(BASE_DIR, "sent_emails")
 
 RECIPES_ON_PAGE = 6
+
+FORBIDDEN_USERNAMES = (
+    'auth', 'api', 'admin', 'about', 'favorite', 'subscription', '404',
+    '500', 'new', 'favorite', 'subscription', 'shopping',)

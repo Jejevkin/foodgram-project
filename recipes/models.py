@@ -39,8 +39,7 @@ class Recipe(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE,
                                related_name='author_recipes')
     title = models.CharField(max_length=255, verbose_name='recipe title')
-    image = models.ImageField(upload_to='recipe/', blank=True, null=True,
-                              verbose_name='recipe image')
+    image = models.ImageField(upload_to='recipe/', verbose_name='recipe image')
     description = models.TextField(verbose_name='recipe description')
     ingredients = models.ManyToManyField(Ingredient,
                                          through='RecipeIngredient',

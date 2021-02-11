@@ -33,7 +33,7 @@
 
     <div class="card__footer">
         {% if request|in_shopping_list:recipe %}
-            <button class="button button_style_light-blue" name="purchases"><span
+            <button class="button button_style_light-blue-outline" name="purchases"><span
                     class="icon-check button__icon"></span>Рецепт добавлен
             </button>
         {% else %}
@@ -43,22 +43,13 @@
         {% endif %}
 
         {% if user.is_authenticated %}
-            {% with current_url=request.resolver_match.url_name %}
-                {% if recipe|is_favorite:request.user %}
-                    {% if 'favorite_recipe' in current_url %}
-                        <a href="{% url 'favorite_recipe' %}">
-                            <button class="button button_style_none" name="favorites"><span
-                                    class="icon-favorite icon-favorite_big icon-favorite_active"></span></button>
-                        </a>
-                    {% else %}
-                        <button class="button button_style_none" name="favorites"><span
-                                class="icon-favorite icon-favorite_big icon-favorite_active"></span></button>
-                    {% endif %}
-                {% else %}
-                    <button class="button button_style_none" name="favorites" data-out><span
-                            class="icon-favorite icon-favorite_big"></span></button>
-                {% endif %}
-            {% endwith %}
+            {% if recipe|is_favorite:request.user %}
+                <button class="button button_style_none" name="favorites"><span
+                        class="icon-favorite icon-favorite_big icon-favorite_active"></span></button>
+            {% else %}
+                <button class="button button_style_none" name="favorites" data-out><span
+                        class="icon-favorite icon-favorite_big"></span></button>
+            {% endif %}
         {% endif %}
     </div>
 </div>
